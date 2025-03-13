@@ -15,7 +15,6 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.navigation.Screen
 import com.example.fitnesstracker.presentation.ui.component.StyledButton
+import com.example.fitnesstracker.presentation.ui.component.StyledImage
 import com.example.fitnesstracker.presentation.ui.theme.Grey
 
 @Composable
@@ -36,12 +36,12 @@ fun MainScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
+        StyledImage(
             modifier = Modifier
-                .size(400.dp)
                 .padding(top = 82.dp),
+            size = 400.dp,
             painter = painterResource(id = R.drawable.main_screen_image),
-            contentDescription = "Fitness Tracker App Image"
+            contentDescription = "Fitness Tracker Image"
         )
         Text(
             modifier = Modifier
@@ -86,6 +86,7 @@ fun MainScreen(
             fontWeight = FontWeight.W700,
             fontSize = 16.sp,
         )
+
     }
 }
 
