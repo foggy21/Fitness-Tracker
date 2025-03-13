@@ -1,14 +1,11 @@
 package com.example.fitnesstracker.presentation.ui.component
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +21,7 @@ import com.example.fitnesstracker.presentation.ui.theme.Primary
 fun StyledTextField(
     modifier: Modifier = Modifier,
     textView: TextView = viewModel(),
-    label: String = "",
+    label: String = ""
 ) {
     OutlinedTextField(
         label = {  Text(

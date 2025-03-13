@@ -7,10 +7,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 class PasswordView : ViewModel() {
-    val password = TextFieldState()
+    var password by mutableStateOf("")
+        private set
+
     var showPassword by mutableStateOf(false)
 
-
+    fun updatePassword(password: String) {
+        this.password = password
+    }
 }
 
 

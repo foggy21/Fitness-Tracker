@@ -10,5 +10,13 @@
     <string name="repeat_password">Повторите пароль</string>
     <string name="name_or_nickname">Имя или никнейм</string>
     <string name="top_bar_login">Вход</string>
-    <string name="top_bar_sign_up"></string>
+    <string name="top_bar_sign_up">Регистрация</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+    <string name="another_gender">Другое</string>
+    <string name="gender">Пол</string>
+    <string name="privacy_policy_text">Нажимая на кнопку, вы соглашаетесь c </string>
+    <string name="privacy_policy"> политикой конфиденциальности </string>
+    <string name="user_agreement_text"> и обработки персональных данных, а также принимаете </string>
+    <string name="user_agreement"> пользовательское соглашение </string>
 </resources>
