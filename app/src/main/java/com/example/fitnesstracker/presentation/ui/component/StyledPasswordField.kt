@@ -31,8 +31,7 @@ import com.example.fitnesstracker.presentation.ui.theme.Primary
 fun StyledPasswordField(
     modifier: Modifier = Modifier,
     passwordView: PasswordView = viewModel(),
-    label: String = stringResource(id = R.string.password),
-    horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally
+    label: String = stringResource(id = R.string.password)
 ) {
     OutlinedTextField(
         modifier = Modifier
