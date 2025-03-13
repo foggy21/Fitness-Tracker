@@ -1,5 +1,7 @@
 package com.example.fitnesstracker.presentation.ui.component
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,12 +19,15 @@ fun StyledButton(
     Button(
         modifier = modifier,
         onClick = onClick,
-        shape = RoundedCornerShape(size = 15.dp),
+        shape = RoundedCornerShape(size = 4.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Primary
-
         )
     ) {
-        content()
+        Box(
+            modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
+        ) {
+            content()
+        }
     }
 }
