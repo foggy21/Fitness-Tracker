@@ -1,12 +1,19 @@
 package com.example.fitnesstracker.presentation.screen
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,20 +27,28 @@ import com.example.fitnesstracker.presentation.ui.component.StyledButton
 import com.example.fitnesstracker.presentation.ui.component.StyledImage
 import com.example.fitnesstracker.presentation.ui.component.StyledPasswordField
 import com.example.fitnesstracker.presentation.ui.component.StyledTextField
-import com.example.fitnesstracker.presentation.ui.component.StyledTopBar
+import com.example.fitnesstracker.presentation.ui.component.StyledTopAppBar
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
     onNavigateTo: (Screen) -> Unit = {}
 ) {
-    StyledTopBar(
-        title = stringResource(id = R.string.top_bar_login),
-        contentDescription = "Back Button Image"
-    ) {
+
+    Scaffold(
+        topBar = {
+            StyledTopAppBar(
+                title = stringResource(id = R.string.top_bar_login),
+                contentDescription = "Back Arrow Image"
+            )
+        },
+        bottomBar = {},
+        contentWindowInsets = WindowInsets.statusBars
+    ) { innerPadding ->
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             StyledImage(
@@ -41,10 +56,17 @@ fun LoginScreen(
                 painter = painterResource(id = R.drawable.main_screen_image),
                 contentDescription = "Fitness Tracker Image"
             )
+            var login by remember { mutableStateOf("") }
             StyledTextField(
+                value = login,
+                onValueChange = {login = it},
                 label = stringResource(id = R.string.login)
             )
-            StyledPasswordField()
+            var password by remember { mutableStateOf("") }
+            StyledPasswordField(
+                value = password,
+                onValueChange = {password = it},
+            )
             StyledButton(
                 modifier = Modifier
                     .padding(top = 32.dp)

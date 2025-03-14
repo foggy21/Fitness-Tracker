@@ -19,9 +19,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnesstracker.R
-import com.example.fitnesstracker.presentation.screen.viewmodel.PasswordView
 import com.example.fitnesstracker.presentation.ui.theme.Grey
 import com.example.fitnesstracker.presentation.ui.theme.LightGrey
 import com.example.fitnesstracker.presentation.ui.theme.Primary
@@ -29,15 +27,18 @@ import com.example.fitnesstracker.presentation.ui.theme.Primary
 @Composable
 fun StyledPasswordField(
     modifier: Modifier = Modifier,
-    passwordView: PasswordView = viewModel(),
+    value: String,
+    onValueChange: (String) -> Unit,
+    showPassword: Boolean = false,
+    onShowPasswordChange: (Boolean) -> Unit = {},
     label: String = stringResource(id = R.string.password)
 ) {
     OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
         modifier = Modifier
             .width(320.dp)
             .padding(bottom = 16.dp),
-        value = passwordView.password,
-        onValueChange = passwordView::updatePassword,
         label = { Text(
             label,
             fontSize = 16.sp,
@@ -46,7 +47,7 @@ fun StyledPasswordField(
             letterSpacing = 0.sp
         ) },
         singleLine = true,
-        visualTransformation = if (passwordView.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         shape = RoundedCornerShape(4.dp),
         colors = OutlinedTextFieldDefaults.colors(
@@ -54,15 +55,11 @@ fun StyledPasswordField(
             focusedBorderColor = Primary
         ),
         trailingIcon = {
-            val image = if (passwordView.showPassword)
+            val image = if (showPassword)
                 painterResource(id = R.drawable.visibility)
             else painterResource(id = R.drawable.visibility_off)
-
-            // Localized description for accessibility services
-            val description = if (passwordView.showPassword) "Hide password" else "Show password"
-
-            // Toggle button to hide or display password
-            IconButton(onClick = {passwordView.showPassword = !passwordView.showPassword}){
+            val description = if (showPassword) "Hide password" else "Show password"
+            IconButton(onClick = {onShowPasswordChange(!showPassword)}){
                 Icon(painter = image, description)
             }
         }
