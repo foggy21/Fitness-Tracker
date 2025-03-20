@@ -22,4 +22,11 @@
     <string name="error_password_length">Пароль должен содержать минимум 8 символов</string>
     <string name="error_repeated_password_empty">Повторите пароль</string>
     <string name="error_repeated_password_not_equal">Пароли не совпадают</string>
+    <string name="my_activity">Моя</string>
+    <string name="users_activity">Пользователей</string>
+    <string name="activity">Активность</string>
+    <string name="profile">Профиль</string>
+    <string name="save">Сохранить</string>
+    <string name="change_password">Изменить пароль</string>
+    <string name="log_out">Выйти</string>
 </resources>

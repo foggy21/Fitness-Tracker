@@ -5,8 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.fitnesstracker.presentation.screen.ActivityScreen
 import com.example.fitnesstracker.presentation.screen.LoginScreen
 import com.example.fitnesstracker.presentation.screen.MainScreen
+import com.example.fitnesstracker.presentation.screen.NavigationScreen
 import com.example.fitnesstracker.presentation.screen.RegisterScreen
 import kotlinx.serialization.Serializable
 
@@ -19,6 +21,8 @@ sealed class Screen {
     data object Login : Screen()
     @Serializable
     data object Register : Screen()
+    @Serializable
+    data object Activity: Screen()
 }
 
 @Composable
@@ -32,7 +36,7 @@ fun MainNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Main,
+        startDestination = Screen.Activity,
         modifier = modifier
     ) {
         composable<Screen.Main> {
@@ -43,6 +47,9 @@ fun MainNavigation(
         }
         composable<Screen.Login> {
             LoginScreen(onNavigateTo = navigationCallback)
+        }
+        composable<Screen.Activity> {
+            NavigationScreen(onNavigateTo = navigationCallback)
         }
     }
 }
