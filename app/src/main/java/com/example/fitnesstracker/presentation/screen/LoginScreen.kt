@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnesstracker.R
-import com.example.fitnesstracker.presentation.navigation.Screen
+import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.ui.component.StyledButton
 import com.example.fitnesstracker.presentation.ui.component.StyledImage
 import com.example.fitnesstracker.presentation.ui.component.StyledPasswordField
@@ -31,7 +30,7 @@ import com.example.fitnesstracker.presentation.ui.component.StyledTopAppBar
 
 @Composable
 fun LoginScreen(
-    onNavigateTo: (Screen) -> Unit = {}
+    onNavigateTo: NavigationCallback = {}
 ) {
 
     Scaffold(
@@ -63,14 +62,16 @@ fun LoginScreen(
                 label = stringResource(id = R.string.login)
             )
             var password by remember { mutableStateOf("") }
+            var showPassword by remember { mutableStateOf(false) }
             StyledPasswordField(
                 value = password,
                 onValueChange = {password = it},
+                showPassword = showPassword,
+                onShowPasswordChange = {showPassword = it}
             )
             StyledButton(
                 modifier = Modifier
-                    .padding(top = 32.dp)
-                    .size(width = 320.dp, height = 48.dp),
+                    .padding(top = 32.dp),
                 onClick = {}
             ) {
                 Text(

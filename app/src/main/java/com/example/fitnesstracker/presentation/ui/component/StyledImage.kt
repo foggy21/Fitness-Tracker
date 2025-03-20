@@ -15,7 +15,7 @@ fun StyledImage (
     contentDescription: String = "Content Description"
 ) {
     Image(
-        modifier = Modifier
+        modifier = modifier
             .size(size),
         painter = painter,
         contentDescription = contentDescription

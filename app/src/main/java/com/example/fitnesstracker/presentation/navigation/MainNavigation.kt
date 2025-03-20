@@ -10,6 +10,8 @@ import com.example.fitnesstracker.presentation.screen.MainScreen
 import com.example.fitnesstracker.presentation.screen.RegisterScreen
 import kotlinx.serialization.Serializable
 
+typealias NavigationCallback = (Screen) -> Unit
+
 sealed class Screen {
     @Serializable
     data object Main : Screen()
@@ -24,25 +26,23 @@ fun MainNavigation(
     modifier: Modifier = Modifier,
     navHostController: NavHostController
 ) {
+    val navigationCallback: NavigationCallback = { screen ->
+        navHostController.navigate(screen)
+    }
+
     NavHost(
-        modifier = modifier,
         navController = navHostController,
-        startDestination = Screen.Register
+        startDestination = Screen.Main,
+        modifier = modifier
     ) {
         composable<Screen.Main> {
-            MainScreen {
-                navigateTo -> navHostController.navigate(navigateTo)
-            }
+            MainScreen(onNavigateTo = navigationCallback)
         }
         composable<Screen.Register> {
-            RegisterScreen {
-                navigateTo -> navHostController.navigate(navigateTo)
-            }
+            RegisterScreen(onNavigateTo = navigationCallback)
         }
         composable<Screen.Login> {
-            LoginScreen {
-                navigateTo -> navHostController.navigate(navigateTo)
-            }
+            LoginScreen(onNavigateTo = navigationCallback)
         }
     }
 }

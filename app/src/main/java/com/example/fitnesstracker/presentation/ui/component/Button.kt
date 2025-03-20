@@ -1,7 +1,6 @@
 package com.example.fitnesstracker.presentation.ui.component
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,17 +16,14 @@ fun StyledButton(
     content: @Composable () -> Unit
 ) {
     Button(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth(0.9f),
         onClick = onClick,
         shape = RoundedCornerShape(size = 4.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Primary
         )
     ) {
-        Box(
-            modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
-        ) {
-            content()
-        }
+        content()
     }
 }

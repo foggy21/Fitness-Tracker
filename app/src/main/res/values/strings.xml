@@ -19,4 +19,7 @@
     <string name="privacy_policy"> политикой конфиденциальности </string>
     <string name="user_agreement_text"> и обработки персональных данных, а также принимаете </string>
     <string name="user_agreement"> пользовательское соглашение </string>
+    <string name="error_password_length">Пароль должен содержать минимум 8 символов</string>
+    <string name="error_repeated_password_empty">Повторите пароль</string>
+    <string name="error_repeated_password_not_equal">Пароли не совпадают</string>
 </resources>
