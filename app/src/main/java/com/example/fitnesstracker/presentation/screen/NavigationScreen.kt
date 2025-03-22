@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
+import com.example.fitnesstracker.presentation.ui.theme.Primary
 
 data class NavItem(
     val label: String,
@@ -50,6 +53,7 @@ fun NavigationScreen(
         bottomBar = {
             NavigationBar(
                 windowInsets = WindowInsets(0,0,0,0),
+                containerColor = MaterialTheme.colorScheme.background
             ) {
                 navItemList.forEachIndexed { index, item ->
                     NavigationBarItem(
@@ -67,7 +71,12 @@ fun NavigationScreen(
                             Text(
                                 text = item.label
                             )
-                        }
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = Primary,
+                            selectedTextColor = Primary,
+                            indicatorColor = MaterialTheme.colorScheme.background
+                        )
                     )
                 }
             }

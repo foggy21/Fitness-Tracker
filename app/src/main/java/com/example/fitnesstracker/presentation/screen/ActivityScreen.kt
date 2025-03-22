@@ -71,7 +71,7 @@ fun ActivityScreen(
         }
         HorizontalPager(
             state = pageState,
-            userScrollEnabled = false,
+            userScrollEnabled = true,
         ) {}
     }
 }
