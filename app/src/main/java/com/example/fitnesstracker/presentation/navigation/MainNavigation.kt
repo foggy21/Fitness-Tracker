@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.fitnesstracker.presentation.screen.ActivityScreen
 import com.example.fitnesstracker.presentation.screen.LoginScreen
 import com.example.fitnesstracker.presentation.screen.MainScreen
 import com.example.fitnesstracker.presentation.screen.NavigationScreen
@@ -36,7 +35,7 @@ fun MainNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Activity,
+        startDestination = Screen.Login,
         modifier = modifier
     ) {
         composable<Screen.Main> {
