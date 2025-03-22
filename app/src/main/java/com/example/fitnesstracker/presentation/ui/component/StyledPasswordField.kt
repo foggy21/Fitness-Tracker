@@ -1,7 +1,15 @@
 package com.example.fitnesstracker.presentation.ui.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -39,9 +47,7 @@ fun StyledPasswordField(
     errorMessage: String? = null
 ) {
     Column(
-        modifier = modifier
-            .padding(bottom = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         OutlinedTextField(
             value = value,
@@ -78,9 +84,14 @@ fun StyledPasswordField(
                 }
             }
         )
-        if (isError && errorMessage != null) {
+
+        AnimatedVisibility(
+            visible = isError && errorMessage != null,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
             Text(
-                text = errorMessage,
+                text = errorMessage ?: "",
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = modifier
@@ -88,5 +99,4 @@ fun StyledPasswordField(
             )
         }
     }
-
 }

@@ -1,9 +1,12 @@
 package com.example.fitnesstracker.presentation.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.selection.selectableGroup
@@ -52,13 +55,13 @@ fun RegisterScreen(
     ) { innerPadding ->
         Column (
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+                .fillMaxWidth()
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Column(
+            Column (
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 12.dp),
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 var login by remember { mutableStateOf("")}
@@ -89,7 +92,6 @@ fun RegisterScreen(
                         else -> null
                     }
                 }
-
                 StyledPasswordField(
                     value = password,
                     onValueChange = {
@@ -112,7 +114,6 @@ fun RegisterScreen(
                         else -> null
                     }
                 }
-
                 StyledPasswordField(
                     value = repeatedPassword,
                     onValueChange = {
@@ -127,65 +128,73 @@ fun RegisterScreen(
                 )
             }
 
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+            )
+
             Column(
                 modifier = Modifier
-                    .selectableGroup()
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .padding(start = 12.dp, bottom = 8.dp),
-                    text = stringResource(id = R.string.gender),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W600,
-                    letterSpacing = 0.sp
-                )
-
-                GenderSelection(
-                    selectedGender = Gender.Male
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                StyledButton(
-                    onClick = {}
+                        .selectableGroup()
+                        .fillMaxWidth(),
                 ) {
                     Text(
-                        text = stringResource(id = R.string.button_register),
-                        fontSize = 16.sp
+                        modifier = Modifier
+                            .padding(start = 12.dp, bottom = 8.dp),
+                        text = stringResource(id = R.string.gender),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.W600,
+                        letterSpacing = 0.sp
+                    )
+
+                    GenderSelection(
+                        selectedGender = Gender.Male
                     )
                 }
-                StyledClickableText(
-                    textParts = listOf(
-                        LinkTextPart(
-                            text = stringResource(id = R.string.privacy_policy_text)
-                        ),
-                        LinkTextPart(
-                            text = stringResource(id = R.string.privacy_policy),
-                            isLink = true,
-                            onClick = {}
-                        ),
-                        LinkTextPart(
-                            text = stringResource(id = R.string.user_agreement_text)
-                        ),
-                        LinkTextPart(
-                            text = stringResource(id = R.string.user_agreement),
-                            isLink = true,
-                            onClick = {}
-                        )
-                    ),
-                    fontWeight = FontWeight.W400,
-                    fontSize = 12.sp,
-                    lineHeight = 18.sp,
-                    textAlign = TextAlign.Center,
+                Column(
                     modifier = Modifier
-                        .padding(vertical = 24.dp)
-                )
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    StyledButton(
+                        onClick = {}
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.button_register),
+                            fontSize = 16.sp
+                        )
+                    }
+                    StyledClickableText(
+                        textParts = listOf(
+                            LinkTextPart(
+                                text = stringResource(id = R.string.privacy_policy_text)
+                            ),
+                            LinkTextPart(
+                                text = stringResource(id = R.string.privacy_policy),
+                                isLink = true,
+                                onClick = {}
+                            ),
+                            LinkTextPart(
+                                text = stringResource(id = R.string.user_agreement_text)
+                            ),
+                            LinkTextPart(
+                                text = stringResource(id = R.string.user_agreement),
+                                isLink = true,
+                                onClick = {}
+                            )
+                        ),
+                        fontWeight = FontWeight.W400,
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }
