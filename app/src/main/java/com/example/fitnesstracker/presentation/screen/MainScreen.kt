@@ -1,8 +1,11 @@
 package com.example.fitnesstracker.presentation.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,54 +35,76 @@ fun MainScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        StyledImage(
+        Box(
             modifier = Modifier
-                .padding(top = 82.dp),
-            size = 400.dp,
-            painter = painterResource(id = R.drawable.main_screen_image),
-            contentDescription = "Fitness Tracker Image"
-        )
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 15.dp, vertical = 30.dp),
-            text = stringResource(id = R.string.app_title),
-            fontSize = 24.sp,
-            lineHeight = 35.sp,
-            letterSpacing = 0.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            modifier = Modifier
-                .padding(bottom = 30.dp),
-            text = stringResource(id = R.string.app_subtitle),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W400,
-            color = Grey,
-        )
-        StyledButton(
-            modifier = Modifier
-                .fillMaxWidth(0.6f),
-            onClick = {}
+                .weight(1f)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = stringResource(id = R.string.button_register),
-                fontSize = 16.sp
+            StyledImage(
+                size = 400.dp,
+                painter = painterResource(id = R.drawable.main_screen_image),
+                contentDescription = "Fitness Tracker Image"
             )
         }
-        StyledClickableText(
-            textParts = listOf(
-                LinkTextPart(
-                    text = stringResource(id = R.string.sign_in),
-                    isLink = true,
-                    onClick = {}
-                )
-            ),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W700,
+
+        Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 24.dp)
-        )
+                .weight(1f)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = stringResource(id = R.string.app_title_first),
+                fontSize = 24.sp,
+                lineHeight = 35.sp,
+                letterSpacing = 0.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                maxLines = 1
+            )
+            Text(
+                text = stringResource(id = R.string.app_title_second),
+                fontSize = 24.sp,
+                lineHeight = 35.sp,
+                letterSpacing = 0.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                maxLines = 1
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(id = R.string.app_subtitle),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W400,
+                color = Grey,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            StyledButton(
+                modifier = Modifier
+                    .fillMaxWidth(0.6f),
+                onClick = {}
+            ) {
+                Text(
+                    text = stringResource(id = R.string.button_register),
+                    fontSize = 16.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            StyledClickableText(
+                textParts = listOf(
+                    LinkTextPart(
+                        text = stringResource(id = R.string.sign_in),
+                        isLink = true,
+                        onClick = {}
+                    )
+                ),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W700,
+            )
+            Spacer(modifier = Modifier.weight(3f))
+        }
     }
 }
 
