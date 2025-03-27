@@ -35,7 +35,7 @@ fun MainNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Register,
+        startDestination = Screen.Activity,
         modifier = modifier
     ) {
         composable<Screen.Main> {

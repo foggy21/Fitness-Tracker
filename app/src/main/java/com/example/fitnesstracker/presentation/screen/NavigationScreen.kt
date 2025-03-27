@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -49,7 +48,7 @@ fun NavigationScreen(
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     Scaffold (
-        topBar = {},
+        contentWindowInsets = WindowInsets(0,0,0,0),
         bottomBar = {
             NavigationBar(
                 windowInsets = WindowInsets(0,0,0,0),
@@ -81,7 +80,6 @@ fun NavigationScreen(
                 }
             }
         },
-        contentWindowInsets = WindowInsets.statusBars
     ) { innerPadding ->
         Column (
             modifier = Modifier
