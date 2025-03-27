@@ -1,4 +1,4 @@
-package com.example.fitnesstracker.ui.theme
+package com.example.fitnesstracker.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

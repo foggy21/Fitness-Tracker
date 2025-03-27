@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -59,7 +60,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     ksp(libs.androidx.room.compiler)
@@ -67,4 +68,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.convertJson)
     implementation(libs.okhttp)
+
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.androidx.navigation.compose)
 }

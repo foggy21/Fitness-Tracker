@@ -1,7 +1,33 @@
 <resources>
     <string name="app_name">Fitness Tracker</string>
-    <string name="app_title">Пожалуй, лучший фитнес трекер в ДВФУ</string>
+    <string name="app_title_first">Пожалуй, лучший фитнес</string>
+    <string name="app_title_second">трекер в ДВФУ</string>
     <string name="app_subtitle">Созданный студентами</string>
     <string name="button_register">Зарегистрироваться</string>
     <string name="sign_in">У вас уже есть аккаунт?</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="button_sign_in">Войти</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="name_or_nickname">Имя или никнейм</string>
+    <string name="top_bar_login">Вход</string>
+    <string name="top_bar_sign_up">Регистрация</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+    <string name="another_gender">Другое</string>
+    <string name="gender">Пол</string>
+    <string name="privacy_policy_text">Нажимая на кнопку, вы соглашаетесь c </string>
+    <string name="privacy_policy"> политикой конфиденциальности </string>
+    <string name="user_agreement_text"> и обработки персональных данных, а также принимаете </string>
+    <string name="user_agreement"> пользовательское соглашение </string>
+    <string name="error_password_length">Пароль должен содержать минимум 8 символов</string>
+    <string name="error_repeated_password_empty">Повторите пароль</string>
+    <string name="error_repeated_password_not_equal">Пароли не совпадают</string>
+    <string name="my_activity">Моя</string>
+    <string name="users_activity">Пользователей</string>
+    <string name="activity">Активность</string>
+    <string name="profile">Профиль</string>
+    <string name="save">Сохранить</string>
+    <string name="change_password">Изменить пароль</string>
+    <string name="log_out">Выйти</string>
 </resources>
