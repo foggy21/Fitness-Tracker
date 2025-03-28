@@ -1,7 +1,14 @@
 package com.example.fitnesstracker.presentation.ui.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -20,6 +27,8 @@ fun StyledTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
+    isError: Boolean = false,
+    errorMessage: String? = null
 ) {
     OutlinedTextField(
         value = value,
@@ -39,4 +48,18 @@ fun StyledTextField(
             focusedBorderColor = Primary
         )
     )
+
+    AnimatedVisibility(
+        visible = isError && errorMessage != null,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically()
+    ) {
+        Text(
+            text = errorMessage ?: "",
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = modifier
+                .padding(start = 16.dp)
+        )
+    }
 }
