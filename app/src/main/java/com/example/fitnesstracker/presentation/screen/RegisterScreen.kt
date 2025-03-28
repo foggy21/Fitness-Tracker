@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.ui.component.Gender
@@ -36,9 +37,11 @@ import com.example.fitnesstracker.presentation.ui.component.StyledClickableText
 import com.example.fitnesstracker.presentation.ui.component.StyledPasswordField
 import com.example.fitnesstracker.presentation.ui.component.StyledTextField
 import com.example.fitnesstracker.presentation.ui.component.StyledTopAppBar
+import com.example.fitnesstracker.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
+    viewModel: RegisterViewModel = viewModel(),
     onNavigateTo: NavigationCallback = {}
 ) {
     Scaffold(
@@ -64,67 +67,38 @@ fun RegisterScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var login by remember { mutableStateOf("")}
+
                 StyledTextField(
-                    value = login,
-                    onValueChange = {login = it},
-                    label = stringResource(R.string.login)
+                    value = viewModel.login.value,
+                    onValueChange = { viewModel.updateLogin(it) },
+                    label = stringResource(R.string.login),
+                    isError = viewModel.loginError.value != null,
+                    errorMessage = viewModel.loginError.value
                 )
-                var name by remember { mutableStateOf("")}
+
                 StyledTextField(
-                    value = name,
-                    onValueChange = {name = it},
+                    value = viewModel.nickname.value,
+                    onValueChange = { viewModel.updateNickname(it) },
                     label = stringResource(R.string.name_or_nickname)
                 )
-                var password by remember { mutableStateOf("") }
-                var showPassword by remember { mutableStateOf(false) }
-                var passwordError by remember { mutableStateOf<String?>(null) }
 
-                val context = LocalContext.current
-
-                fun getStringFromResources( resId: Int): String {
-                    return context.getString(resId)
-                }
-
-                fun validatePassword(password: String): String? {
-                    return when {
-                        password.length < 8 -> getStringFromResources(R.string.error_password_length)
-                        else -> null
-                    }
-                }
                 StyledPasswordField(
-                    value = password,
-                    onValueChange = {
-                        password = it
-                        passwordError = validatePassword(it)
-                    },
-                    showPassword = showPassword,
-                    onShowPasswordChange = {showPassword = it},
-                    isError = passwordError != null,
-                    errorMessage = passwordError
+                    value = viewModel.password.value,
+                    onValueChange = { viewModel.updatePassword(it) },
+                    showPassword = viewModel.showPassword.value,
+                    onShowPasswordChange = { viewModel.togglePasswordVisibility() },
+                    isError = viewModel.passwordError.value != null,
+                    errorMessage = viewModel.passwordError.value
                 )
-                var repeatedPassword by remember { mutableStateOf("") }
-                var showRepeatedPassword by remember { mutableStateOf(false) }
-                var repeatedPasswordError by remember { mutableStateOf<String?>(null) }
 
-                fun validateRepeatedPassword(password: String, repeatedPassword: String): String? {
-                    return when {
-                        repeatedPassword.isEmpty() -> getStringFromResources(R.string.error_repeated_password_empty)
-                        password != repeatedPassword -> getStringFromResources(R.string.error_repeated_password_not_equal)
-                        else -> null
-                    }
-                }
                 StyledPasswordField(
-                    value = repeatedPassword,
-                    onValueChange = {
-                        repeatedPassword = it
-                        repeatedPasswordError = validateRepeatedPassword(password, it)
-                    },
-                    showPassword = showRepeatedPassword,
-                    onShowPasswordChange = {showRepeatedPassword = it},
+                    value = viewModel.repeatedPassword.value,
+                    onValueChange = { viewModel.updateRepeatedPassword(it) },
+                    showPassword = viewModel.showRepeatedPassword.value,
+                    onShowPasswordChange = { viewModel.toggleRepeatedPasswordVisibility() },
                     label = stringResource(id = R.string.repeat_password),
-                    isError = repeatedPasswordError != null,
-                    errorMessage = repeatedPasswordError
+                    isError = viewModel.repeatedPasswordError.value != null,
+                    errorMessage = viewModel.repeatedPasswordError.value
                 )
             }
 
@@ -163,7 +137,7 @@ fun RegisterScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     StyledButton(
-                        onClick = {}
+                        onClick = { viewModel.register() }
                     ) {
                         Text(
                             text = stringResource(id = R.string.button_register),
