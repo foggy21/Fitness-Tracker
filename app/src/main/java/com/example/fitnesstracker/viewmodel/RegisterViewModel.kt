@@ -1,69 +1,146 @@
 package com.example.fitnesstracker.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.fitnesstracker.model.User
 import com.example.fitnesstracker.model.UserRepository
+import com.example.fitnesstracker.model.UserRepositoryImpl
+import com.example.fitnesstracker.presentation.state.RegisterEvent
+import com.example.fitnesstracker.presentation.state.RegisterUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterViewModel : ViewModel() {
-    private val userRepository : UserRepository = UserRepository()
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+    private val userRepository: UserRepository
+) : ViewModel() {
+    private val _uiState = MutableStateFlow(RegisterUiState())
+    val uiState: StateFlow<RegisterUiState> = _uiState
 
-    private val _login = mutableStateOf("")
-    val login: State<String> = _login
-    private val _nickname = mutableStateOf("")
-    val nickname: State<String> = _nickname
-    private val _password = mutableStateOf("")
-    val password: State<String> = _password
-    private val _showPassword = mutableStateOf(false)
-    val showPassword: State<Boolean> = _showPassword
-    private val _repeatedPassword = mutableStateOf("")
-    val repeatedPassword: State<String> = _repeatedPassword
-    private val _showRepeatedPassword = mutableStateOf(false)
-    val showRepeatedPassword: State<Boolean> = _showRepeatedPassword
+    private val _events = Channel<RegisterEvent>()
+    val events = _events.receiveAsFlow()
 
-    private val _loginError = mutableStateOf<String?>(null)
-    val loginError: State<String?> = _loginError
-    private val _passwordError = mutableStateOf<String?>(null)
-    val passwordError: State<String?> = _passwordError
-    private val _repeatedPasswordError = mutableStateOf<String?>(null)
-    val repeatedPasswordError: State<String?> = _repeatedPasswordError
+    private val loginFlow = MutableSharedFlow<String>()
+    private val passwordFlow = MutableSharedFlow<String>()
+    private val repeatedPasswordFlow = MutableSharedFlow<String>()
+
+    init {
+        setupValidationFlow()
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun setupValidationFlow() {
+        viewModelScope.launch {
+            loginFlow
+                .debounce(300)
+                .collect{ login ->
+                    isLoginUnique(login)
+                }
+        }
+
+        viewModelScope.launch {
+            passwordFlow
+                .debounce(300)
+                .collect{ password ->
+                    validatePassword(password)
+                }
+        }
+
+        viewModelScope.launch {
+            repeatedPasswordFlow
+                .debounce(300)
+                .collect{ repeatedPassword ->
+                    validateRepeatedPassword(repeatedPassword)
+                }
+        }
+    }
 
     fun updateLogin(newLogin: String) {
-        _login.value = newLogin
-        validateLogin(newLogin)
+        _uiState.update { currentComposer ->
+            currentComposer.copy(
+                login = newLogin,
+                loginError = null
+            )
+        }
+        viewModelScope.launch {
+            loginFlow.emit(newLogin)
+        }
     }
 
     fun updateNickname(newNickname: String) {
-        _nickname.value = newNickname
+        _uiState.update { currentComposer ->
+            currentComposer.copy(
+                nickname = newNickname
+            )
+        }
     }
 
     fun updatePassword(newPassword: String) {
-        _password.value = newPassword
-        validatePassword(newPassword)
+        _uiState.update { currentComposer ->
+            currentComposer.copy(
+                password = newPassword,
+                passwordError = null
+            )
+        }
+        viewModelScope.launch {
+            passwordFlow.emit(newPassword)
+        }
     }
 
     fun updateRepeatedPassword(newRepeatedPassword: String) {
-        _repeatedPassword.value = newRepeatedPassword
-        validateRepeatedPassword(newRepeatedPassword)
+        _uiState.update { currentComposer ->
+            currentComposer.copy(
+                repeatedPassword = newRepeatedPassword,
+                repeatedPasswordError = null
+            )
+        }
+        viewModelScope.launch {
+            repeatedPasswordFlow.emit(newRepeatedPassword)
+        }
     }
 
     fun togglePasswordVisibility() {
-        _showPassword.value = !_showPassword.value
+        _uiState.update { currentComposer ->
+            currentComposer.copy(
+                showPassword = !currentComposer.showPassword
+            )
+        }
     }
 
     fun toggleRepeatedPasswordVisibility() {
-        _showRepeatedPassword.value = !_showRepeatedPassword.value
+        _uiState.update { currentComposer ->
+            currentComposer.copy(
+                showRepeatedPassword = !currentComposer.showRepeatedPassword
+            )
+        }
     }
 
-    private fun validateLogin(login: String): Boolean {
+    private fun isLoginUnique(login: String): Boolean {
         return when {
             userRepository.fetchUserByLogin(login) != null -> {
-                _loginError.value = "Пользователь с таким логином уже существует"
+                _uiState.update { currentComposer ->
+                    currentComposer.copy(
+                        loginError = "Пользователь с таким логином уже существует"
+                    )
+                }
                 false
             }
             else -> {
-                _loginError.value = null
+                _uiState.update { currentComposer ->
+                    currentComposer.copy(
+                        loginError = null
+                    )
+                }
                 true
             }
         }
@@ -72,11 +149,19 @@ class RegisterViewModel : ViewModel() {
     private fun validatePassword(password: String): Boolean {
         return when {
             password.length < 8 -> {
-                _passwordError.value = "Пароль должен содержать минимум 8 символов"
+                _uiState.update { currentComposer ->
+                    currentComposer.copy(
+                        passwordError = "Пароль должен содержать минимум 8 символов"
+                    )
+                }
                 false
             }
             else -> {
-                _passwordError.value = null
+                _uiState.update { currentComposer ->
+                    currentComposer.copy(
+                        passwordError = null
+                    )
+                }
                 true
             }
         }
@@ -84,31 +169,53 @@ class RegisterViewModel : ViewModel() {
 
     private fun validateRepeatedPassword(repeatedPassword: String): Boolean {
         return when {
-            _password.value != repeatedPassword -> {
-                _repeatedPasswordError.value = "Пароли должны совпадать"
+
+            _uiState.value.password != repeatedPassword -> {
+                _uiState.update { currentComposer ->
+                    currentComposer.copy(
+                        repeatedPasswordError = "Пароли должны совпадать"
+                    )
+                }
                 false
             }
             else -> {
-                _repeatedPasswordError.value = null
+                _uiState.update { currentComposer ->
+                    currentComposer.copy(
+                        repeatedPasswordError = null
+                    )
+                }
                 true
             }
         }
     }
 
     fun register() {
-        val loginValid = validateLogin(_login.value)
-        val passwordValid = validatePassword(_password.value)
-        val repeatedPasswordValid = validateRepeatedPassword(_repeatedPassword.value)
+        viewModelScope.launch {
+            try {
+                _uiState.update { it.copy(isLoading = true) }
+                val currentState = _uiState.value
+                val loginUnique = isLoginUnique(currentState.login)
+                val passwordValid = validatePassword(currentState.password)
+                val repeatedPasswordValid = validateRepeatedPassword(currentState.repeatedPassword)
 
-        if (loginValid && passwordValid && repeatedPasswordValid) {
-            val newUser = User(
-                login = _login.value,
-                nickname = _nickname.value,
-                password =  _password.value
-            )
+                if (loginUnique && passwordValid && repeatedPasswordValid) {
+                    val newUser = User(
+                        login = currentState.login,
+                        nickname = currentState.nickname,
+                        password = currentState.password
+                    )
 
-            userRepository.registerUser(newUser)
+                    delay(1000)
+                    userRepository.registerUser(newUser)
+                    _events.send(RegisterEvent.Success)
+                }
+            } catch (e: Exception) {
+                _events.send(RegisterEvent.Error(e.message ?: "Неизвестная ошибка"))
+            } finally {
+                _uiState.update { it.copy(isLoading = false) }
+            }
         }
+
     }
 
 
