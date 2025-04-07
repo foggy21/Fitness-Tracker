@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnesstracker.model.User
 import com.example.fitnesstracker.model.UserRepository
-import com.example.fitnesstracker.model.UserRepositoryImpl
 import com.example.fitnesstracker.presentation.state.RegisterEvent
 import com.example.fitnesstracker.presentation.state.RegisterUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
