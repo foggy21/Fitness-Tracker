@@ -3,6 +3,7 @@ package com.example.fitnesstracker.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnesstracker.R
+import com.example.fitnesstracker.model.Gender
 import com.example.fitnesstracker.model.User
 import com.example.fitnesstracker.model.UserRepository
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
@@ -109,6 +110,14 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun updateGender(newGender: Gender) {
+        _uiState.update { currentComposer ->
+            currentComposer.copy(
+                gender = newGender
+            )
+        }
+    }
+
     fun togglePasswordVisibility() {
         _uiState.update { currentComposer ->
             currentComposer.copy(
@@ -202,7 +211,8 @@ class RegisterViewModel @Inject constructor(
                     val newUser = User(
                         login = currentState.login,
                         nickname = currentState.nickname,
-                        password = currentState.password
+                        password = currentState.password,
+                        gender = currentState.gender
                     )
 
                     delay(1000)

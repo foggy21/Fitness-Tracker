@@ -32,10 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fitnesstracker.R
+import com.example.fitnesstracker.model.Gender
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.navigation.Screen
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
-import com.example.fitnesstracker.presentation.ui.component.Gender
 import com.example.fitnesstracker.presentation.ui.component.GenderSelection
 import com.example.fitnesstracker.presentation.ui.component.LinkTextPart
 import com.example.fitnesstracker.presentation.ui.component.StyledButton
@@ -155,7 +155,7 @@ fun RegisterScreen(
                     )
 
                     GenderSelection(
-                        selectedGender = Gender.Male
+                        viewModel = viewModel
                     )
                 }
                 Column(

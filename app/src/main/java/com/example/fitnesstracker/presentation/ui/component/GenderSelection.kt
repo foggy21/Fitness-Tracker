@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,32 +18,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.example.fitnesstracker.R
+import com.example.fitnesstracker.model.Gender
+import com.example.fitnesstracker.viewmodel.RegisterViewModel
 
-enum class Gender(val gender: Int) {
-    Male(R.string.male),
-    Female(R.string.female),
-    Another(R.string.another_gender)
-}
 
 @Composable
 fun GenderSelection(
-    selectedGender: Gender,
+    viewModel: RegisterViewModel,
     modifier: Modifier = Modifier
 ) {
-    val radioButtons = mutableListOf<String>()
-    enumValues<Gender>().forEach { value ->
-        radioButtons.add(stringResource(id = value.gender))
+    val uiState by viewModel.uiState.collectAsState()
+    val radioButtons = mutableMapOf<Int, Gender>()
+    enumValues<Gender>().forEach { gender ->
+        radioButtons[gender.gender] = gender
     }
-    var (selectedButton, onButtonSelect) = remember { mutableStateOf(selectedGender.name) }
     radioButtons.forEach{
-        val isSelected = it == selectedButton
+        val isSelected = it.value.name == uiState.gender.name
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .height(36.dp)
                 .selectable(
                     selected = isSelected,
-                    onClick = { onButtonSelect(it) },
+                    onClick = { viewModel.updateGender(it.value) },
                     role = Role.RadioButton
                 ),
             verticalAlignment = Alignment.CenterVertically,
@@ -49,10 +48,10 @@ fun GenderSelection(
             RadioButton(
                 modifier = modifier,
                 selected = isSelected,
-                onClick = { selectedButton = it }
+                onClick = { viewModel.updateGender(it.value) }
             )
             Text(
-                text = it,
+                text = stringResource(id = it.key),
                 style = MaterialTheme.typography.bodyLarge
             )
         }
