@@ -1,10 +1,8 @@
 package com.example.fitnesstracker.viewmodel
 
-import androidx.compose.runtime.currentComposer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnesstracker.R
-import com.example.fitnesstracker.model.User
 import com.example.fitnesstracker.model.UserRepository
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
 import com.example.fitnesstracker.presentation.state.AuthenticationUiState
