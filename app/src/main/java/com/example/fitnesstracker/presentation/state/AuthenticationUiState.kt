@@ -1,6 +1,6 @@
 package com.example.fitnesstracker.presentation.state
 
-data class RegisterUiState(
+data class AuthenticationUiState(
     val login: String = "",
     val nickname: String = "",
     val password: String = "",

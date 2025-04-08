@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,11 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
-import com.example.fitnesstracker.presentation.ui.component.LinkTextPart
+import com.example.fitnesstracker.presentation.navigation.Screen
 import com.example.fitnesstracker.presentation.ui.component.StyledButton
-import com.example.fitnesstracker.presentation.ui.component.StyledClickableText
 import com.example.fitnesstracker.presentation.ui.component.StyledImage
 import com.example.fitnesstracker.presentation.ui.theme.Grey
+import com.example.fitnesstracker.presentation.ui.theme.Primary
 
 @Composable
 fun MainScreen(
@@ -83,25 +85,29 @@ fun MainScreen(
             StyledButton(
                 modifier = Modifier
                     .fillMaxWidth(0.6f),
-                onClick = {}
+                onClick = { onNavigateTo(Screen.Register) }
             ) {
                 Text(
                     text = stringResource(id = R.string.button_register),
                     fontSize = 16.sp
                 )
             }
+
             Spacer(modifier = Modifier.height(16.dp))
-            StyledClickableText(
-                textParts = listOf(
-                    LinkTextPart(
-                        text = stringResource(id = R.string.sign_in),
-                        isLink = true,
-                        onClick = {}
-                    )
+
+            StyledButton(
+                onClick = { onNavigateTo(Screen.Login) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = Primary
                 ),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.W700,
-            )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.sign_in),
+                    fontSize = 16.sp
+                )
+            }
+
             Spacer(modifier = Modifier.weight(3f))
         }
     }

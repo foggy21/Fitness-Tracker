@@ -2,10 +2,11 @@ package com.example.fitnesstracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fitnesstracker.R
 import com.example.fitnesstracker.model.User
 import com.example.fitnesstracker.model.UserRepository
-import com.example.fitnesstracker.presentation.state.RegisterEvent
-import com.example.fitnesstracker.presentation.state.RegisterUiState
+import com.example.fitnesstracker.presentation.state.AuthenticationEvent
+import com.example.fitnesstracker.presentation.state.AuthenticationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -23,10 +24,10 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(RegisterUiState())
-    val uiState: StateFlow<RegisterUiState> = _uiState
+    private val _uiState = MutableStateFlow(AuthenticationUiState())
+    val uiState: StateFlow<AuthenticationUiState> = _uiState
 
-    private val _events = Channel<RegisterEvent>()
+    private val _events = Channel<AuthenticationEvent>()
     val events = _events.receiveAsFlow()
 
     private val loginFlow = MutableSharedFlow<String>()
@@ -129,7 +130,7 @@ class RegisterViewModel @Inject constructor(
             userRepository.fetchUserByLogin(login) != null -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
-                        loginError = "Пользователь с таким логином уже существует"
+                        loginError = "${R.string.error_login_exist}"
                     )
                 }
                 false
@@ -150,7 +151,7 @@ class RegisterViewModel @Inject constructor(
             password.length < 8 -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
-                        passwordError = "Пароль должен содержать минимум 8 символов"
+                        passwordError = "${R.string.error_password_length}"
                     )
                 }
                 false
@@ -172,7 +173,7 @@ class RegisterViewModel @Inject constructor(
             _uiState.value.password != repeatedPassword -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
-                        repeatedPasswordError = "Пароли должны совпадать"
+                        repeatedPasswordError = "${R.string.error_repeated_password_not_equal}"
                     )
                 }
                 false
@@ -206,10 +207,10 @@ class RegisterViewModel @Inject constructor(
 
                     delay(1000)
                     userRepository.registerUser(newUser)
-                    _events.send(RegisterEvent.Success)
+                    _events.send(AuthenticationEvent.Success)
                 }
             } catch (e: Exception) {
-                _events.send(RegisterEvent.Error(e.message ?: "Неизвестная ошибка"))
+                _events.send(AuthenticationEvent.Error(e.message ?: "Неизвестная ошибка"))
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
             }

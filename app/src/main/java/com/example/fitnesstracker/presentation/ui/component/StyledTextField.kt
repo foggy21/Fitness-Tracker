@@ -5,6 +5,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,36 +31,39 @@ fun StyledTextField(
     isError: Boolean = false,
     errorMessage: String? = null
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = {  Text(
-            text = label,
-            fontSize = 16.sp,
-            color = Grey,
-            fontWeight = FontWeight.W400,
-            letterSpacing = 0.sp)
-        },
-        modifier = modifier
-            .fillMaxWidth(0.9f),
-        shape = RoundedCornerShape(4.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            unfocusedBorderColor = LightGrey,
-            focusedBorderColor = Primary
-        )
-    )
-
-    AnimatedVisibility(
-        visible = isError && errorMessage != null,
-        enter = fadeIn() + expandVertically(),
-        exit = fadeOut() + shrinkVertically()
-    ) {
-        Text(
-            text = errorMessage ?: "",
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodySmall,
+    Column {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            label = {  Text(
+                text = label,
+                fontSize = 16.sp,
+                color = if (isError) MaterialTheme.colorScheme.error else Grey,
+                fontWeight = FontWeight.W400,
+                letterSpacing = 0.sp)
+            },
+            singleLine = true,
             modifier = modifier
-                .padding(start = 16.dp)
+                .fillMaxWidth(0.9f),
+            shape = RoundedCornerShape(4.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = if (isError) MaterialTheme.colorScheme.error else LightGrey,
+                focusedBorderColor = if (isError) MaterialTheme.colorScheme.error else Primary
+            )
         )
+
+        AnimatedVisibility(
+            visible = isError && errorMessage != null,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            Text(
+                text = errorMessage ?: "",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = modifier
+                    .padding(start = 16.dp)
+            )
+        }
     }
 }

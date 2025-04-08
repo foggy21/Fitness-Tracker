@@ -22,6 +22,8 @@ sealed class Screen {
     data object Register : Screen()
     @Serializable
     data object Activity: Screen()
+    @Serializable
+    data object Back: Screen()
 }
 
 @Composable
@@ -30,12 +32,19 @@ fun MainNavigation(
     navHostController: NavHostController
 ) {
     val navigationCallback: NavigationCallback = { screen ->
-        navHostController.navigate(screen)
+        when (screen) {
+            is Screen.Back -> {
+                navHostController.popBackStack()
+            }
+            else -> {
+                navHostController.navigate(screen)
+            }
+        }
     }
 
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Register,
+        startDestination = Screen.Main,
         modifier = modifier
     ) {
         composable<Screen.Main> {

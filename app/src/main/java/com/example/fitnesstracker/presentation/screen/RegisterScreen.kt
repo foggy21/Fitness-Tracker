@@ -34,7 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.navigation.Screen
-import com.example.fitnesstracker.presentation.state.RegisterEvent
+import com.example.fitnesstracker.presentation.state.AuthenticationEvent
 import com.example.fitnesstracker.presentation.ui.component.Gender
 import com.example.fitnesstracker.presentation.ui.component.GenderSelection
 import com.example.fitnesstracker.presentation.ui.component.LinkTextPart
@@ -57,10 +57,10 @@ fun RegisterScreen(
     LaunchedEffect(key1 = true) {
         viewModel.events.collect{ event ->
             when (event) {
-                is RegisterEvent.Success -> {
-                    onNavigateTo(Screen.Main)
+                is AuthenticationEvent.Success -> {
+                    onNavigateTo(Screen.Login)
                 }
-                is RegisterEvent.Error -> {
+                is AuthenticationEvent.Error -> {
                     snackBarHostState.showSnackbar(
                         message = event.message,
                         duration = SnackbarDuration.Short
@@ -75,6 +75,7 @@ fun RegisterScreen(
             .fillMaxSize(),
         topBar = {
             StyledTopAppBar(
+                onNavigationTo = onNavigateTo,
                 title = stringResource(id = R.string.top_bar_sign_up),
                 contentDescription = "Back Arrow Image"
             )

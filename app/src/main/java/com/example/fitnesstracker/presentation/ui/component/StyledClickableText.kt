@@ -1,5 +1,6 @@
 package com.example.fitnesstracker.presentation.ui.component
 
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,8 +37,9 @@ fun StyledClickableText(
                 if (part.isLink) {
                     pushStringAnnotation(
                         tag = "url_$index",
-                        annotation = "url"
+                        annotation = "url",
                     )
+
                     withStyle(SpanStyle(color = linkColor)){
                         append(part.text)
                     }
@@ -59,5 +61,4 @@ fun StyledClickableText(
         textAlign = textAlign,
         modifier = modifier
     )
-
 }
