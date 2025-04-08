@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fitnesstracker.R
-import com.example.fitnesstracker.model.Gender
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.navigation.Screen
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
