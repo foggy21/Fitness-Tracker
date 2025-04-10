@@ -174,7 +174,7 @@ fun RegisterScreen(
                             )
                         } else {
                             Text(
-                                text = AppStrings.BUTTON_SIGN_IN,
+                                text = AppStrings.BUTTON_REGISTER,
                                 fontSize = 16.sp
                             )
                         }

@@ -3,7 +3,6 @@ package com.example.fitnesstracker.res
 class AppStrings {
 
     companion object {
-        const val APP_NAME = "Fitness Tracker"
         const val APP_TITLE_FIRST = "Пожалуй, лучший фитнес"
         const val APP_TITLE_SECOND = "трекер в ДВФУ"
         const val APP_SUBTITLE = "Созданный студентами"
@@ -39,7 +38,6 @@ class AppStrings {
         // Errors
         const val ERROR_PASSWORD_INCORRECT = "Неверный пароль"
         const val ERROR_PASSWORD_LENGTH = "Пароль должен содержать минимум 8 символов"
-        const val ERROR_REPEATED_PASSWORD_EMPTY = "Повторите пароль"
         const val ERROR_REPEATED_PASSWORD_NOT_EQUAL = "Пароли не совпадают"
         const val ERROR_LOGIN_EXIST = "Пользователь с таким логином уже существует"
         const val ERROR_LOGIN_NOT_EXIST = "Пользователь с таким логином не существует"

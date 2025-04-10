@@ -29,7 +29,7 @@ fun GenderSelection(
         radioButtons.add(gender)
     }
     radioButtons.forEach{
-        val isSelected = it.gender == uiState.gender.name
+        val isSelected = it.gender == uiState.gender.gender
         Row(
             modifier = modifier
                 .fillMaxWidth()
