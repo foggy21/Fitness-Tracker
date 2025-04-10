@@ -24,14 +24,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.navigation.Screen
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
@@ -43,6 +41,7 @@ import com.example.fitnesstracker.presentation.ui.component.StyledPasswordField
 import com.example.fitnesstracker.presentation.ui.component.StyledTextField
 import com.example.fitnesstracker.presentation.ui.component.StyledTopAppBar
 import com.example.fitnesstracker.presentation.ui.theme.Primary
+import com.example.fitnesstracker.res.AppStrings
 import com.example.fitnesstracker.viewmodel.RegisterViewModel
 
 @Composable
@@ -75,7 +74,7 @@ fun RegisterScreen(
         topBar = {
             StyledTopAppBar(
                 onNavigationTo = onNavigateTo,
-                title = stringResource(id = R.string.top_bar_sign_up),
+                title = AppStrings.TOP_BAR_SIGN_UP,
                 contentDescription = "Back Arrow Image"
             )
         },
@@ -98,7 +97,7 @@ fun RegisterScreen(
                 StyledTextField(
                     value = uiState.login,
                     onValueChange = { viewModel.updateLogin(it) },
-                    label = stringResource(R.string.login),
+                    label = AppStrings.LOGIN,
                     isError = uiState.loginError != null,
                     errorMessage = uiState.loginError
                 )
@@ -106,7 +105,7 @@ fun RegisterScreen(
                 StyledTextField(
                     value = uiState.nickname,
                     onValueChange = { viewModel.updateNickname(it) },
-                    label = stringResource(R.string.name_or_nickname)
+                    label = AppStrings.NAME_OR_NICKNAME
                 )
 
                 StyledPasswordField(
@@ -123,7 +122,7 @@ fun RegisterScreen(
                     onValueChange = { viewModel.updateRepeatedPassword(it) },
                     showPassword = uiState.showRepeatedPassword,
                     onShowPasswordChange = { viewModel.toggleRepeatedPasswordVisibility() },
-                    label = stringResource(id = R.string.repeat_password),
+                    label = AppStrings.REPEAT_PASSWORD,
                     isError = uiState.repeatedPasswordError != null,
                     errorMessage = uiState.repeatedPasswordError
                 )
@@ -147,7 +146,7 @@ fun RegisterScreen(
                     Text(
                         modifier = Modifier
                             .padding(start = 12.dp, bottom = 8.dp),
-                        text = stringResource(id = R.string.gender),
+                        text = AppStrings.GENDER,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.W600,
                         letterSpacing = 0.sp
@@ -175,7 +174,7 @@ fun RegisterScreen(
                             )
                         } else {
                             Text(
-                                text = stringResource(id = R.string.button_register),
+                                text = AppStrings.BUTTON_SIGN_IN,
                                 fontSize = 16.sp
                             )
                         }
@@ -183,18 +182,18 @@ fun RegisterScreen(
                     StyledClickableText(
                         textParts = listOf(
                             LinkTextPart(
-                                text = stringResource(id = R.string.privacy_policy_text)
+                                text = AppStrings.PRIVACY_POLICY_TEXT
                             ),
                             LinkTextPart(
-                                text = stringResource(id = R.string.privacy_policy),
+                                text = AppStrings.PRIVACY_POLICY,
                                 isLink = true,
                                 onClick = {}
                             ),
                             LinkTextPart(
-                                text = stringResource(id = R.string.user_agreement_text)
+                                text = AppStrings.USER_AGREEMENT_TEXT
                             ),
                             LinkTextPart(
-                                text = stringResource(id = R.string.user_agreement),
+                                text = AppStrings.USER_AGREEMENT,
                                 isLink = true,
                                 onClick = {}
                             )
@@ -209,7 +208,6 @@ fun RegisterScreen(
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)

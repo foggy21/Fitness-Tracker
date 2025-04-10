@@ -1,4 +1,4 @@
-package com.example.fitnesstracker.model
+package com.example.fitnesstracker.model.user
 
 data class User(
     var login: String,

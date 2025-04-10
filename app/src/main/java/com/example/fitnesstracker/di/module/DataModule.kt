@@ -1,7 +1,7 @@
 package com.example.fitnesstracker.di.module
 
-import com.example.fitnesstracker.model.UserRepository
-import com.example.fitnesstracker.model.UserRepositoryImpl
+import com.example.fitnesstracker.model.user.UserRepository
+import com.example.fitnesstracker.model.user.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

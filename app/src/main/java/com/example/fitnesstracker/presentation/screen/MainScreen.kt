@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +25,7 @@ import com.example.fitnesstracker.presentation.ui.component.StyledButton
 import com.example.fitnesstracker.presentation.ui.component.StyledImage
 import com.example.fitnesstracker.presentation.ui.theme.Grey
 import com.example.fitnesstracker.presentation.ui.theme.Primary
+import com.example.fitnesstracker.res.AppStrings
 
 @Composable
 fun MainScreen(
@@ -57,7 +57,7 @@ fun MainScreen(
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = stringResource(id = R.string.app_title_first),
+                text = AppStrings.APP_TITLE_FIRST,
                 fontSize = 24.sp,
                 lineHeight = 35.sp,
                 letterSpacing = 0.sp,
@@ -66,7 +66,7 @@ fun MainScreen(
                 maxLines = 1
             )
             Text(
-                text = stringResource(id = R.string.app_title_second),
+                text = AppStrings.APP_TITLE_SECOND,
                 fontSize = 24.sp,
                 lineHeight = 35.sp,
                 letterSpacing = 0.sp,
@@ -76,7 +76,7 @@ fun MainScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(id = R.string.app_subtitle),
+                text = AppStrings.APP_SUBTITLE,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W400,
                 color = Grey,
@@ -88,7 +88,7 @@ fun MainScreen(
                 onClick = { onNavigateTo(Screen.Register) }
             ) {
                 Text(
-                    text = stringResource(id = R.string.button_register),
+                    text = AppStrings.BUTTON_REGISTER,
                     fontSize = 16.sp
                 )
             }
@@ -103,7 +103,7 @@ fun MainScreen(
                 ),
             ) {
                 Text(
-                    text = stringResource(id = R.string.sign_in),
+                    text = AppStrings.SIGN_IN,
                     fontSize = 16.sp
                 )
             }

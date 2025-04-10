@@ -31,6 +31,7 @@ import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.ui.theme.Grey
 import com.example.fitnesstracker.presentation.ui.theme.LightGrey
 import com.example.fitnesstracker.presentation.ui.theme.Primary
+import com.example.fitnesstracker.res.AppStrings
 
 @Composable
 fun StyledPasswordField(
@@ -39,7 +40,7 @@ fun StyledPasswordField(
     onValueChange: (String) -> Unit,
     showPassword: Boolean = false,
     onShowPasswordChange: (Boolean) -> Unit = {},
-    label: String = stringResource(id = R.string.password),
+    label: String = AppStrings.PASSWORD,
     isError: Boolean = false,
     errorMessage: String? = null
 ) {

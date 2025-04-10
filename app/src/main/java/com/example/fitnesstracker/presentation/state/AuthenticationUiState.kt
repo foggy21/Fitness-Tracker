@@ -1,6 +1,6 @@
 package com.example.fitnesstracker.presentation.state
 
-import com.example.fitnesstracker.model.Gender
+import com.example.fitnesstracker.model.user.Gender
 
 data class AuthenticationUiState(
     val login: String = "",

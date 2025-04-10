@@ -2,12 +2,12 @@ package com.example.fitnesstracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fitnesstracker.R
-import com.example.fitnesstracker.model.Gender
-import com.example.fitnesstracker.model.User
-import com.example.fitnesstracker.model.UserRepository
+import com.example.fitnesstracker.model.user.Gender
+import com.example.fitnesstracker.model.user.User
+import com.example.fitnesstracker.model.user.UserRepository
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
 import com.example.fitnesstracker.presentation.state.AuthenticationUiState
+import com.example.fitnesstracker.res.AppStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -139,7 +139,7 @@ class RegisterViewModel @Inject constructor(
             userRepository.fetchUserByLogin(login) != null -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
-                        loginError = "${R.string.error_login_exist}"
+                        loginError = AppStrings.ERROR_LOGIN_EXIST
                     )
                 }
                 false
@@ -160,7 +160,7 @@ class RegisterViewModel @Inject constructor(
             password.length < 8 -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
-                        passwordError = "${R.string.error_password_length}"
+                        passwordError = AppStrings.ERROR_PASSWORD_LENGTH
                     )
                 }
                 false
@@ -182,7 +182,7 @@ class RegisterViewModel @Inject constructor(
             _uiState.value.password != repeatedPassword -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
-                        repeatedPasswordError = "${R.string.error_repeated_password_not_equal}"
+                        repeatedPasswordError = AppStrings.ERROR_REPEATED_PASSWORD_NOT_EQUAL
                     )
                 }
                 false
@@ -220,7 +220,7 @@ class RegisterViewModel @Inject constructor(
                     _events.send(AuthenticationEvent.Success)
                 }
             } catch (e: Exception) {
-                _events.send(AuthenticationEvent.Error(e.message ?: "Неизвестная ошибка"))
+                _events.send(AuthenticationEvent.Error(e.message ?: AppStrings.ERROR_UNKNOWN))
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
             }

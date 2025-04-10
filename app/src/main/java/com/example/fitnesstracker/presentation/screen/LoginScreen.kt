@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +38,7 @@ import com.example.fitnesstracker.presentation.ui.component.StyledPasswordField
 import com.example.fitnesstracker.presentation.ui.component.StyledTextField
 import com.example.fitnesstracker.presentation.ui.component.StyledTopAppBar
 import com.example.fitnesstracker.presentation.ui.theme.Primary
+import com.example.fitnesstracker.res.AppStrings
 import com.example.fitnesstracker.viewmodel.LoginViewModel
 
 @Composable
@@ -69,7 +69,7 @@ fun LoginScreen(
         topBar = {
             StyledTopAppBar(
                 onNavigationTo = onNavigateTo,
-                title = stringResource(id = R.string.top_bar_login),
+                title = AppStrings.TOP_BAR_LOGIN,
                 contentDescription = "Back Arrow Image"
             )
         },
@@ -109,7 +109,7 @@ fun LoginScreen(
                 StyledTextField(
                     value = uiState.login,
                     onValueChange = { viewModel.updateLogin(it) },
-                    label = stringResource(id = R.string.login),
+                    label = AppStrings.LOGIN,
                     isError = uiState.loginError != null,
                     errorMessage = uiState.loginError
                 )
@@ -137,7 +137,7 @@ fun LoginScreen(
                         )
                     } else {
                         Text(
-                            text = stringResource(id = R.string.button_sign_in),
+                            text = AppStrings.BUTTON_SIGN_IN,
                             fontSize = 16.sp
                         )
                     }

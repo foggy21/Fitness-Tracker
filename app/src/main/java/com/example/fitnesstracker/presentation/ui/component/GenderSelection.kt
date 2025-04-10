@@ -12,10 +12,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.example.fitnesstracker.model.Gender
+import com.example.fitnesstracker.model.user.Gender
 import com.example.fitnesstracker.viewmodel.RegisterViewModel
 
 
@@ -25,19 +24,19 @@ fun GenderSelection(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val radioButtons = mutableMapOf<Int, Gender>()
+    val radioButtons = mutableListOf<Gender>()
     enumValues<Gender>().forEach { gender ->
-        radioButtons[gender.gender] = gender
+        radioButtons.add(gender)
     }
     radioButtons.forEach{
-        val isSelected = it.value.name == uiState.gender.name
+        val isSelected = it.gender == uiState.gender.name
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .height(36.dp)
                 .selectable(
                     selected = isSelected,
-                    onClick = { viewModel.updateGender(it.value) },
+                    onClick = { viewModel.updateGender(it) },
                     role = Role.RadioButton
                 ),
             verticalAlignment = Alignment.CenterVertically,
@@ -45,10 +44,10 @@ fun GenderSelection(
             RadioButton(
                 modifier = modifier,
                 selected = isSelected,
-                onClick = { viewModel.updateGender(it.value) }
+                onClick = { viewModel.updateGender(it) }
             )
             Text(
-                text = stringResource(id = it.key),
+                text = it.gender,
                 style = MaterialTheme.typography.bodyLarge
             )
         }

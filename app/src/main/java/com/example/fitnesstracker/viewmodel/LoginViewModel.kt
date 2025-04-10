@@ -1,11 +1,13 @@
 package com.example.fitnesstracker.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnesstracker.R
-import com.example.fitnesstracker.model.UserRepository
+import com.example.fitnesstracker.model.user.UserRepository
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
 import com.example.fitnesstracker.presentation.state.AuthenticationUiState
+import com.example.fitnesstracker.res.AppStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -47,7 +49,7 @@ class LoginViewModel @Inject constructor(
             login.isBlank() -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
-                        loginError = "${R.string.error_login_blank}"
+                        loginError = AppStrings.ERROR_LOGIN_BLANK
                     )
                 }
                 false
@@ -68,7 +70,7 @@ class LoginViewModel @Inject constructor(
             password.isBlank() -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
-                        passwordError = "${R.string.error_password_blank}"
+                        passwordError = AppStrings.ERROR_PASSWORD_BLANK
                     )
                 }
                 false
@@ -107,12 +109,12 @@ class LoginViewModel @Inject constructor(
                             delay(1000)
                             _events.send(AuthenticationEvent.Success)
                         }
-                        throw Exception("${R.string.error_password_incorrect}")
+                        throw Exception(AppStrings.ERROR_PASSWORD_INCORRECT)
                     }
-                    throw Exception("${R.string.error_login_not_exist}")
+                    throw Exception(AppStrings.ERROR_LOGIN_NOT_EXIST)
                 }
             } catch (e: Exception) {
-                _events.send(AuthenticationEvent.Error(e.message ?: "Неизвестная ошибка"))
+                _events.send(AuthenticationEvent.Error(e.message ?: AppStrings.ERROR_UNKNOWN))
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
             }

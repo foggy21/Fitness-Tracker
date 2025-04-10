@@ -1,4 +1,4 @@
-package com.example.fitnesstracker.model
+package com.example.fitnesstracker.model.user
 
 interface UserRepository {
     fun registerUser(user: User)

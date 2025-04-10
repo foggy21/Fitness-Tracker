@@ -1,4 +1,4 @@
-package com.example.fitnesstracker.model
+package com.example.fitnesstracker.model.user
 
 class UserRepositoryImpl : UserRepository {
     private val users = mutableMapOf<String, User>()

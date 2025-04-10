@@ -34,5 +34,7 @@
     <string name="profile">Профиль</string>
     <string name="save">Сохранить</string>
     <string name="change_password">Изменить пароль</string>
+    <string name="bike">Велосипед</string>
+    <string name="running">Бег</string>
     <string name="log_out">Выйти</string>
 </resources>
