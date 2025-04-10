@@ -19,11 +19,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.ui.theme.Primary
+import com.example.fitnesstracker.res.AppStrings
 
 data class NavItem(
     val label: String,
@@ -36,11 +36,11 @@ fun NavigationScreen(
 ) {
     val navItemList = listOf(
         NavItem(
-            stringResource(id = R.string.activity),
+            AppStrings.ACTIVITY,
             painterResource(id = R.drawable.activity)
         ),
         NavItem(
-            stringResource(id = R.string.profile),
+            AppStrings.PROFILE,
             painterResource(id = R.drawable.person)
         )
     )
@@ -86,7 +86,11 @@ fun NavigationScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            ContentScreen(selectedIndex)
+            ContentScreen(
+                selectedIndex,
+                onNavigateTo = onNavigateTo
+            )
+
         }
     }
 }
@@ -94,10 +98,13 @@ fun NavigationScreen(
 @Composable
 fun ContentScreen(
     selectedIndex: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateTo: NavigationCallback = {}
 ) {
     when(selectedIndex){
-        0 -> ActivityScreen(modifier)
+        0 -> ActivityScreen(
+            modifier = modifier,
+            onNavigateTo = onNavigateTo)
         1 -> ProfileScreen(modifier)
     }
 }

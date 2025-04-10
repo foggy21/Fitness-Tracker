@@ -21,17 +21,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.ui.component.LinkTextPart
 import com.example.fitnesstracker.presentation.ui.component.StyledButton
 import com.example.fitnesstracker.presentation.ui.component.StyledClickableText
 import com.example.fitnesstracker.presentation.ui.component.StyledTextField
 import com.example.fitnesstracker.presentation.ui.theme.Burgundy
+import com.example.fitnesstracker.res.AppStrings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +41,7 @@ fun ProfileScreen(
         topBar = {
             TopAppBar(
                 title = { Text(
-                    text = stringResource(id = R.string.profile),
+                    text = AppStrings.PROFILE,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W600
                 )},
@@ -52,7 +51,7 @@ fun ProfileScreen(
                             .padding(end = 8.dp),
                          textParts = listOf(
                              LinkTextPart(
-                                 text = stringResource(id = R.string.save),
+                                 text = AppStrings.SAVE,
                                  isLink = true,
                                  onClick = {}
                              )
@@ -81,13 +80,13 @@ fun ProfileScreen(
                 StyledTextField(
                     value = login,
                     onValueChange = { login = it },
-                    label = stringResource(R.string.login)
+                    label = AppStrings.LOGIN
                 )
                 var name by remember { mutableStateOf("") }
                 StyledTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = stringResource(R.string.name_or_nickname)
+                    label = AppStrings.NAME_OR_NICKNAME
                 )
             }
             Spacer(modifier = modifier
@@ -101,7 +100,7 @@ fun ProfileScreen(
                 StyledClickableText(
                     textParts = listOf(
                         LinkTextPart(
-                            text = stringResource(R.string.change_password),
+                            text = AppStrings.CHANGE_PASSWORD,
                             isLink = true,
                             onClick = {}
                         )
@@ -124,7 +123,7 @@ fun ProfileScreen(
                     )
                 ) {
                     Text(
-                        text = stringResource(R.string.log_out),
+                        text = AppStrings.LOG_OUT,
                         fontWeight = FontWeight.W700,
                         fontSize = 16.sp
                     )

@@ -10,11 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import com.example.fitnesstracker.presentation.navigation.NavigationCallback
+import com.example.fitnesstracker.presentation.navigation.Screen
 import com.example.fitnesstracker.presentation.ui.theme.Primary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StyledTopAppBar(
+    onNavigationTo: NavigationCallback,
     title: String,
     contentDescription: String = "Content Description"
 ) {
@@ -25,7 +28,7 @@ fun StyledTopAppBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = { onNavigationTo(Screen.Back) }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = contentDescription,

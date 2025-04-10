@@ -1,6 +1,9 @@
 package com.example.fitnesstracker.presentation.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -11,17 +14,22 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fitnesstracker.R
+import com.example.fitnesstracker.presentation.navigation.NavigationCallback
+import com.example.fitnesstracker.presentation.navigation.Screen
+import com.example.fitnesstracker.presentation.ui.component.StyledActionButton
 import com.example.fitnesstracker.presentation.ui.theme.Primary
+import com.example.fitnesstracker.res.AppStrings
 import kotlinx.coroutines.launch
 
 @Composable
 fun ActivityScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateTo: NavigationCallback = {}
 ) {
     Column {
         val pageState = rememberPagerState(
@@ -46,7 +54,7 @@ fun ActivityScreen(
                 selected = pageState.currentPage == 0,
                 text = {
                     Text(
-                        text = stringResource(id = R.string.my_activity)
+                        text = AppStrings.MY_ACTIVITY
                     )
                 },
                 onClick = {
@@ -59,7 +67,7 @@ fun ActivityScreen(
                 selected = pageState.currentPage == 1,
                 text = {
                     Text(
-                        text = stringResource(id = R.string.users_activity)
+                        text = AppStrings.USERS_ACTIVITY
                     )
                 },
                 onClick = {
@@ -72,7 +80,21 @@ fun ActivityScreen(
         HorizontalPager(
             state = pageState,
             userScrollEnabled = true,
-        ) {}
+        ) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.End
+            ) {
+                StyledActionButton(
+                    modifier = modifier
+                        .padding(end = 12.dp, bottom = 24.dp),
+                    onClick = { onNavigateTo(Screen.NewActivity) },
+                    iconRes = R.drawable.play_arrow
+                )
+            }
+        }
     }
 }
 

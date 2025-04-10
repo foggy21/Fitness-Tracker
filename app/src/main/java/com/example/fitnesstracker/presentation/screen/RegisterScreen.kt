@@ -8,27 +8,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fitnesstracker.R
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
-import com.example.fitnesstracker.presentation.ui.component.Gender
+import com.example.fitnesstracker.presentation.navigation.Screen
+import com.example.fitnesstracker.presentation.state.AuthenticationEvent
 import com.example.fitnesstracker.presentation.ui.component.GenderSelection
 import com.example.fitnesstracker.presentation.ui.component.LinkTextPart
 import com.example.fitnesstracker.presentation.ui.component.StyledButton
@@ -36,21 +40,46 @@ import com.example.fitnesstracker.presentation.ui.component.StyledClickableText
 import com.example.fitnesstracker.presentation.ui.component.StyledPasswordField
 import com.example.fitnesstracker.presentation.ui.component.StyledTextField
 import com.example.fitnesstracker.presentation.ui.component.StyledTopAppBar
+import com.example.fitnesstracker.presentation.ui.theme.Primary
+import com.example.fitnesstracker.res.AppStrings
+import com.example.fitnesstracker.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
+    viewModel: RegisterViewModel = hiltViewModel<RegisterViewModel>(),
     onNavigateTo: NavigationCallback = {}
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val snackBarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.events.collect{ event ->
+            when (event) {
+                is AuthenticationEvent.Success -> {
+                    onNavigateTo(Screen.Login)
+                }
+                is AuthenticationEvent.Error -> {
+                    snackBarHostState.showSnackbar(
+                        message = event.message,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
             StyledTopAppBar(
-                title = stringResource(id = R.string.top_bar_sign_up),
+                onNavigationTo = onNavigateTo,
+                title = AppStrings.TOP_BAR_SIGN_UP,
                 contentDescription = "Back Arrow Image"
             )
         },
         bottomBar = {},
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         contentWindowInsets = WindowInsets.statusBars
     ) { innerPadding ->
         Column (
@@ -64,67 +93,38 @@ fun RegisterScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var login by remember { mutableStateOf("")}
+
                 StyledTextField(
-                    value = login,
-                    onValueChange = {login = it},
-                    label = stringResource(R.string.login)
+                    value = uiState.login,
+                    onValueChange = { viewModel.updateLogin(it) },
+                    label = AppStrings.LOGIN,
+                    isError = uiState.loginError != null,
+                    errorMessage = uiState.loginError
                 )
-                var name by remember { mutableStateOf("")}
+
                 StyledTextField(
-                    value = name,
-                    onValueChange = {name = it},
-                    label = stringResource(R.string.name_or_nickname)
+                    value = uiState.nickname,
+                    onValueChange = { viewModel.updateNickname(it) },
+                    label = AppStrings.NAME_OR_NICKNAME
                 )
-                var password by remember { mutableStateOf("") }
-                var showPassword by remember { mutableStateOf(false) }
-                var passwordError by remember { mutableStateOf<String?>(null) }
 
-                val context = LocalContext.current
-
-                fun getStringFromResources( resId: Int): String {
-                    return context.getString(resId)
-                }
-
-                fun validatePassword(password: String): String? {
-                    return when {
-                        password.length < 8 -> getStringFromResources(R.string.error_password_length)
-                        else -> null
-                    }
-                }
                 StyledPasswordField(
-                    value = password,
-                    onValueChange = {
-                        password = it
-                        passwordError = validatePassword(it)
-                    },
-                    showPassword = showPassword,
-                    onShowPasswordChange = {showPassword = it},
-                    isError = passwordError != null,
-                    errorMessage = passwordError
+                    value = uiState.password,
+                    onValueChange = { viewModel.updatePassword(it) },
+                    showPassword = uiState.showPassword,
+                    onShowPasswordChange = { viewModel.togglePasswordVisibility() },
+                    isError = uiState.passwordError != null,
+                    errorMessage = uiState.passwordError
                 )
-                var repeatedPassword by remember { mutableStateOf("") }
-                var showRepeatedPassword by remember { mutableStateOf(false) }
-                var repeatedPasswordError by remember { mutableStateOf<String?>(null) }
 
-                fun validateRepeatedPassword(password: String, repeatedPassword: String): String? {
-                    return when {
-                        repeatedPassword.isEmpty() -> getStringFromResources(R.string.error_repeated_password_empty)
-                        password != repeatedPassword -> getStringFromResources(R.string.error_repeated_password_not_equal)
-                        else -> null
-                    }
-                }
                 StyledPasswordField(
-                    value = repeatedPassword,
-                    onValueChange = {
-                        repeatedPassword = it
-                        repeatedPasswordError = validateRepeatedPassword(password, it)
-                    },
-                    showPassword = showRepeatedPassword,
-                    onShowPasswordChange = {showRepeatedPassword = it},
-                    label = stringResource(id = R.string.repeat_password),
-                    isError = repeatedPasswordError != null,
-                    errorMessage = repeatedPasswordError
+                    value = uiState.repeatedPassword,
+                    onValueChange = { viewModel.updateRepeatedPassword(it) },
+                    showPassword = uiState.showRepeatedPassword,
+                    onShowPasswordChange = { viewModel.toggleRepeatedPasswordVisibility() },
+                    label = AppStrings.REPEAT_PASSWORD,
+                    isError = uiState.repeatedPasswordError != null,
+                    errorMessage = uiState.repeatedPasswordError
                 )
             }
 
@@ -146,14 +146,14 @@ fun RegisterScreen(
                     Text(
                         modifier = Modifier
                             .padding(start = 12.dp, bottom = 8.dp),
-                        text = stringResource(id = R.string.gender),
+                        text = AppStrings.GENDER,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.W600,
                         letterSpacing = 0.sp
                     )
 
                     GenderSelection(
-                        selectedGender = Gender.Male
+                        viewModel = viewModel
                     )
                 }
                 Column(
@@ -163,28 +163,37 @@ fun RegisterScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     StyledButton(
-                        onClick = {}
+                        onClick = { viewModel.register() },
+                        enabled = !uiState.isLoading
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.button_register),
-                            fontSize = 16.sp
-                        )
+                        if (uiState.isLoading){
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .size(24.dp),
+                                color = Primary
+                            )
+                        } else {
+                            Text(
+                                text = AppStrings.BUTTON_REGISTER,
+                                fontSize = 16.sp
+                            )
+                        }
                     }
                     StyledClickableText(
                         textParts = listOf(
                             LinkTextPart(
-                                text = stringResource(id = R.string.privacy_policy_text)
+                                text = AppStrings.PRIVACY_POLICY_TEXT
                             ),
                             LinkTextPart(
-                                text = stringResource(id = R.string.privacy_policy),
+                                text = AppStrings.PRIVACY_POLICY,
                                 isLink = true,
                                 onClick = {}
                             ),
                             LinkTextPart(
-                                text = stringResource(id = R.string.user_agreement_text)
+                                text = AppStrings.USER_AGREEMENT_TEXT
                             ),
                             LinkTextPart(
-                                text = stringResource(id = R.string.user_agreement),
+                                text = AppStrings.USER_AGREEMENT,
                                 isLink = true,
                                 onClick = {}
                             )
@@ -199,7 +208,6 @@ fun RegisterScreen(
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)

@@ -6,12 +6,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,11 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitnesstracker.R
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
-import com.example.fitnesstracker.presentation.ui.component.LinkTextPart
+import com.example.fitnesstracker.presentation.navigation.Screen
 import com.example.fitnesstracker.presentation.ui.component.StyledButton
-import com.example.fitnesstracker.presentation.ui.component.StyledClickableText
 import com.example.fitnesstracker.presentation.ui.component.StyledImage
 import com.example.fitnesstracker.presentation.ui.theme.Grey
+import com.example.fitnesstracker.presentation.ui.theme.Primary
+import com.example.fitnesstracker.res.AppStrings
 
 @Composable
 fun MainScreen(
@@ -55,7 +57,7 @@ fun MainScreen(
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = stringResource(id = R.string.app_title_first),
+                text = AppStrings.APP_TITLE_FIRST,
                 fontSize = 24.sp,
                 lineHeight = 35.sp,
                 letterSpacing = 0.sp,
@@ -64,7 +66,7 @@ fun MainScreen(
                 maxLines = 1
             )
             Text(
-                text = stringResource(id = R.string.app_title_second),
+                text = AppStrings.APP_TITLE_SECOND,
                 fontSize = 24.sp,
                 lineHeight = 35.sp,
                 letterSpacing = 0.sp,
@@ -74,7 +76,7 @@ fun MainScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(id = R.string.app_subtitle),
+                text = AppStrings.APP_SUBTITLE,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W400,
                 color = Grey,
@@ -83,25 +85,29 @@ fun MainScreen(
             StyledButton(
                 modifier = Modifier
                     .fillMaxWidth(0.6f),
-                onClick = {}
+                onClick = { onNavigateTo(Screen.Register) }
             ) {
                 Text(
-                    text = stringResource(id = R.string.button_register),
+                    text = AppStrings.BUTTON_REGISTER,
                     fontSize = 16.sp
                 )
             }
+
             Spacer(modifier = Modifier.height(16.dp))
-            StyledClickableText(
-                textParts = listOf(
-                    LinkTextPart(
-                        text = stringResource(id = R.string.sign_in),
-                        isLink = true,
-                        onClick = {}
-                    )
+
+            StyledButton(
+                onClick = { onNavigateTo(Screen.Login) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = Primary
                 ),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.W700,
-            )
+            ) {
+                Text(
+                    text = AppStrings.SIGN_IN,
+                    fontSize = 16.sp
+                )
+            }
+
             Spacer(modifier = Modifier.weight(3f))
         }
     }

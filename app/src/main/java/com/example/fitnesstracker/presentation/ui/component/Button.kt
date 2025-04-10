@@ -17,6 +17,7 @@ fun StyledButton(
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = Primary
     ),
+    enabled: Boolean = true,
     content: @Composable () -> Unit
 ) {
     Button(
@@ -24,7 +25,8 @@ fun StyledButton(
             .fillMaxWidth(0.9f),
         onClick = onClick,
         shape = RoundedCornerShape(size = 4.dp),
-        colors = colors
+        colors = colors,
+        enabled = enabled
     ) {
         content()
     }
