@@ -59,8 +59,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     ksp(libs.androidx.room.compiler)
@@ -69,6 +67,9 @@ dependencies {
     implementation(libs.retrofit.convertJson)
     implementation(libs.okhttp)
 
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization)
     implementation(libs.androidx.navigation.compose)
 }

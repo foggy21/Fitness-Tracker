@@ -36,8 +36,9 @@ fun StyledClickableText(
                 if (part.isLink) {
                     pushStringAnnotation(
                         tag = "url_$index",
-                        annotation = "url"
+                        annotation = "url",
                     )
+
                     withStyle(SpanStyle(color = linkColor)){
                         append(part.text)
                     }
@@ -59,5 +60,4 @@ fun StyledClickableText(
         textAlign = textAlign,
         modifier = modifier
     )
-
 }

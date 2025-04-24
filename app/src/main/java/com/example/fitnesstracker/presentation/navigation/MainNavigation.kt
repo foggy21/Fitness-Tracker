@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.fitnesstracker.presentation.screen.LoginScreen
 import com.example.fitnesstracker.presentation.screen.MainScreen
 import com.example.fitnesstracker.presentation.screen.NavigationScreen
+import com.example.fitnesstracker.presentation.screen.NewActivityScreen
 import com.example.fitnesstracker.presentation.screen.RegisterScreen
 import kotlinx.serialization.Serializable
 
@@ -22,6 +23,10 @@ sealed class Screen {
     data object Register : Screen()
     @Serializable
     data object Activity: Screen()
+    @Serializable
+    data object NewActivity: Screen()
+    @Serializable
+    data object Back: Screen()
 }
 
 @Composable
@@ -30,12 +35,19 @@ fun MainNavigation(
     navHostController: NavHostController
 ) {
     val navigationCallback: NavigationCallback = { screen ->
-        navHostController.navigate(screen)
+        when (screen) {
+            is Screen.Back -> {
+                navHostController.popBackStack()
+            }
+            else -> {
+                navHostController.navigate(screen)
+            }
+        }
     }
 
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Activity,
+        startDestination = Screen.Main,
         modifier = modifier
     ) {
         composable<Screen.Main> {
@@ -49,6 +61,9 @@ fun MainNavigation(
         }
         composable<Screen.Activity> {
             NavigationScreen(onNavigateTo = navigationCallback)
+        }
+        composable<Screen.NewActivity> {
+            NewActivityScreen(onNavigateTo = navigationCallback)
         }
     }
 }
