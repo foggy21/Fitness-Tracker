@@ -13,8 +13,12 @@ class NewActivityViewModel : ViewModel() {
     val newActivityState: StateFlow<NewActivityState> = _newActivityState
 
     fun selectActivity(type: ActivityType) {
-        _newActivityState.value = (_newActivityState.value as NewActivityState.Start)
-            .copy(selectedActivity = type)
+        if (_newActivityState.value is NewActivityState.Start)
+        {
+            _newActivityState.value = NewActivityState.Start(
+                selectedActivity = type
+            )
+        }
     }
 
     fun startTracking() {
@@ -25,8 +29,11 @@ class NewActivityViewModel : ViewModel() {
     }
 
     fun stopTracking() {
-        _newActivityState.value = NewActivityState.Start(
-            selectedActivity = (_newActivityState.value as NewActivityState.Tracking).selectedActivity
-        )
+        if (_newActivityState.value is NewActivityState.Tracking) {
+            _newActivityState.value = NewActivityState.Start(
+                selectedActivity = (_newActivityState.value as NewActivityState.Tracking).selectedActivity
+            )
+        }
+
     }
 }

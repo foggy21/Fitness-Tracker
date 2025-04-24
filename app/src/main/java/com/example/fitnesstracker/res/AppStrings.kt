@@ -44,6 +44,10 @@ class AppStrings {
         const val ERROR_LOGIN_BLANK = "Логин не может быть пустым"
         const val ERROR_PASSWORD_BLANK = "Пароль не может быть пустым"
         const val ERROR_UNKNOWN = "Неизвестная ошибка"
+        const val ERROR_LOGIN_INVALID = "Неверный логин"
+        const val ERROR_USERNAME_INVALID = "Неверное имя пользователя"
+        const val ERROR_GENDER_UNKNOWN = "Неизвестный гендер"
+        const val ERROR_LOGIN_DATA_INVALID = "Неверный логин или пароль"
 
         // Activity
         const val MY_ACTIVITY = "Моя"

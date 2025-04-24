@@ -1,7 +1,7 @@
 package com.example.fitnesstracker.di.module
 
-import com.example.fitnesstracker.model.user.UserRepository
-import com.example.fitnesstracker.model.user.UserRepositoryImpl
+import com.example.fitnesstracker.data.database.AppDatabase
+import com.example.fitnesstracker.domain.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,11 +10,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataModule {
-
+class DaoModule {
     @Provides
     @Singleton
-    fun provideUserRepository(): UserRepository {
-        return UserRepositoryImpl()
+    fun provideUserDao(appDatabase: AppDatabase): UserDao {
+        return appDatabase.getUserDao()
     }
 }
