@@ -2,13 +2,15 @@ package com.example.fitnesstracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fitnesstracker.data.database.AuthRepository
+import com.example.fitnesstracker.data.database.UserRepository
 import com.example.fitnesstracker.model.user.Gender
-import com.example.fitnesstracker.model.user.User
-import com.example.fitnesstracker.model.user.UserRepository
+import com.example.fitnesstracker.model.user.RegisterUserDto
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
 import com.example.fitnesstracker.presentation.state.AuthenticationUiState
 import com.example.fitnesstracker.res.AppStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -23,6 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthenticationUiState())
@@ -41,7 +44,7 @@ class RegisterViewModel @Inject constructor(
 
     @OptIn(FlowPreview::class)
     private fun setupValidationFlow() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             loginFlow
                 .debounce(300)
                 .collect{ login ->
@@ -134,9 +137,9 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    private fun isLoginUnique(login: String): Boolean {
+    private suspend fun isLoginUnique(login: String): Boolean {
         return when {
-            userRepository.fetchUserByLogin(login) != null -> {
+            userRepository.fetchUserByLogin(login).isSuccess -> {
                 _uiState.update { currentComposer ->
                     currentComposer.copy(
                         loginError = AppStrings.ERROR_LOGIN_EXIST
@@ -199,26 +202,33 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun register() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _uiState.update { it.copy(isLoading = true) }
                 val currentState = _uiState.value
-                val loginUnique = isLoginUnique(currentState.login)
-                val passwordValid = validatePassword(currentState.password)
-                val repeatedPasswordValid = validateRepeatedPassword(currentState.repeatedPassword)
-
-                if (loginUnique && passwordValid && repeatedPasswordValid) {
-                    val newUser = User(
-                        login = currentState.login,
-                        nickname = currentState.nickname,
-                        password = currentState.password,
-                        gender = currentState.gender
-                    )
+                if (!isLoginUnique(currentState.login)) {
+                    _events.send(AuthenticationEvent.Error(AppStrings.ERROR_LOGIN_EXIST))
+                    return@launch
+                }
+                if (!validatePassword(currentState.password)) {
+                    _events.send(AuthenticationEvent.Error(AppStrings.ERROR_PASSWORD_LENGTH))
+                    return@launch
+                }
+                if (!validateRepeatedPassword(currentState.repeatedPassword)) {
+                    _events.send(AuthenticationEvent.Error(AppStrings.ERROR_REPEATED_PASSWORD_NOT_EQUAL))
+                    return@launch
+                }
 
                     delay(1000)
-                    userRepository.registerUser(newUser)
+                    authRepository.register(
+                        RegisterUserDto(
+                            login = currentState.login,
+                            username = currentState.nickname,
+                            password = currentState.password,
+                            gender = currentState.gender
+                        )
+                    )
                     _events.send(AuthenticationEvent.Success)
-                }
             } catch (e: Exception) {
                 _events.send(AuthenticationEvent.Error(e.message ?: AppStrings.ERROR_UNKNOWN))
             } finally {

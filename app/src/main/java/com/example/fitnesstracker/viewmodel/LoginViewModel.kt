@@ -2,11 +2,13 @@ package com.example.fitnesstracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fitnesstracker.model.user.UserRepository
+import com.example.fitnesstracker.data.database.AuthRepository
+import com.example.fitnesstracker.model.user.LoginUserDto
 import com.example.fitnesstracker.presentation.state.AuthenticationEvent
 import com.example.fitnesstracker.presentation.state.AuthenticationUiState
 import com.example.fitnesstracker.res.AppStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthenticationUiState())
     val uiState: StateFlow<AuthenticationUiState> = _uiState
@@ -93,24 +95,32 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 _uiState.update { it.copy(isLoading = true) }
-                val currentState = _uiState.value
-                val loginValid = validateLogin(currentState.login)
-                val passwordValid = validatePassword(currentState.password)
 
-                if (loginValid && passwordValid) {
-                    val user = userRepository.fetchUserByLogin(currentState.login)
-                    if (user != null) {
-                        if (user.password == currentState.password){
-                            delay(1000)
-                            _events.send(AuthenticationEvent.Success)
-                        }
-                        throw Exception(AppStrings.ERROR_PASSWORD_INCORRECT)
-                    }
-                    throw Exception(AppStrings.ERROR_LOGIN_NOT_EXIST)
+                val currentState = _uiState.value
+                if (!validateLogin(currentState.login)) {
+                    _events.send(AuthenticationEvent.Error(AppStrings.ERROR_LOGIN_INVALID))
+                    return@launch
                 }
+                if(!validatePassword(currentState.password)) {
+                    _events.send(AuthenticationEvent.Error(AppStrings.ERROR_PASSWORD_INCORRECT))
+                    return@launch
+                }
+
+                val login = authRepository.login(
+                    LoginUserDto(
+                        login = currentState.login,
+                        password = currentState.password
+                    )
+                )
+                delay(1000)
+                if (login.isSuccess) {
+                    _events.send(AuthenticationEvent.Success)
+                    return@launch
+                }
+                _events.send(AuthenticationEvent.Error(AppStrings.ERROR_LOGIN_DATA_INVALID))
             } catch (e: Exception) {
                 _events.send(AuthenticationEvent.Error(e.message ?: AppStrings.ERROR_UNKNOWN))
             } finally {

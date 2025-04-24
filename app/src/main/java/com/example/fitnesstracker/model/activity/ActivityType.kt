@@ -12,5 +12,15 @@ enum class ActivityType (val activity: String, @DrawableRes val iconRes: Int) {
     Run(
         activity = AppStrings.RUNNING,
         iconRes = R.drawable.bike_activity
-    )
+    );
+
+    companion object {
+        fun fromValue(value: String): ActivityType {
+            return when (value) {
+                AppStrings.BIKE -> Bike
+                AppStrings.RUNNING -> Run
+                else -> throw IllegalArgumentException(AppStrings.ERROR_ACTIVITY_UNKNOWN)
+            }
+        }
+    }
 }
