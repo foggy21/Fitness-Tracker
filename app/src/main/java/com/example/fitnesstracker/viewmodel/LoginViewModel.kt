@@ -1,6 +1,5 @@
 package com.example.fitnesstracker.viewmodel
 
-import androidx.compose.runtime.currentComposer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitnesstracker.data.database.AuthRepository
