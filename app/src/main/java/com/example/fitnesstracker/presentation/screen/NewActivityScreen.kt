@@ -7,8 +7,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.state.NewActivityState
 import com.example.fitnesstracker.presentation.ui.component.StartActivityContent
 import com.example.fitnesstracker.presentation.ui.component.TrackingActivityContent
