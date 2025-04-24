@@ -1,6 +1,7 @@
 package com.example.fitnesstracker.di.module
 
 import com.example.fitnesstracker.data.database.AppDatabase
+import com.example.fitnesstracker.domain.dao.ActivityDao
 import com.example.fitnesstracker.domain.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -15,5 +16,11 @@ class DaoModule {
     @Singleton
     fun provideUserDao(appDatabase: AppDatabase): UserDao {
         return appDatabase.getUserDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideActivityDao(appDatabase: AppDatabase): ActivityDao {
+        return appDatabase.getActivityDao()
     }
 }

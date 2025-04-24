@@ -1,7 +1,10 @@
 package com.example.fitnesstracker.di.module
 
+import com.example.fitnesstracker.data.database.ActivityRepository
+import com.example.fitnesstracker.data.database.ActivityRepositoryImpl
 import com.example.fitnesstracker.data.database.AuthRepository
 import com.example.fitnesstracker.data.database.UserRepository
+import com.example.fitnesstracker.domain.dao.ActivityDao
 import com.example.fitnesstracker.domain.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -22,5 +25,11 @@ class RepositoryModule {
     @Singleton
     fun provideUserRepository(userDao: UserDao): UserRepository {
         return UserRepository(userDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideActivityRepository(activityDao: ActivityDao): ActivityRepository {
+        return ActivityRepositoryImpl(activityDao)
     }
 }

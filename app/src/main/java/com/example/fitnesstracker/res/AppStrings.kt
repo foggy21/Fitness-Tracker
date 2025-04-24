@@ -47,6 +47,7 @@ class AppStrings {
         const val ERROR_LOGIN_INVALID = "Неверный логин"
         const val ERROR_USERNAME_INVALID = "Неверное имя пользователя"
         const val ERROR_GENDER_UNKNOWN = "Неизвестный гендер"
+        const val ERROR_ACTIVITY_UNKNOWN = "Неизвестный тип активности"
         const val ERROR_LOGIN_DATA_INVALID = "Неверный логин или пароль"
 
         // Activity

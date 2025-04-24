@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnesstracker.presentation.navigation.NavigationCallback
 import com.example.fitnesstracker.presentation.state.NewActivityState
@@ -15,8 +16,7 @@ import com.example.fitnesstracker.viewmodel.NewActivityViewModel
 
 @Composable
 fun NewActivityScreen(
-    viewModel: NewActivityViewModel = viewModel(),
-    onNavigateTo: NavigationCallback = {}
+    viewModel: NewActivityViewModel = hiltViewModel(),
 ) {
     val newActivityState by viewModel.newActivityState.collectAsState()
     Column(
@@ -34,8 +34,8 @@ fun NewActivityScreen(
             }
             is NewActivityState.Tracking -> {
                 TrackingActivityContent(
-                    distance = (newActivityState as NewActivityState.Tracking).distance,
-                    time = (newActivityState as NewActivityState.Tracking).time,
+                    distance = (newActivityState as NewActivityState.Tracking).distance.toString(),
+                    time = (newActivityState as NewActivityState.Tracking).time.toString(),
                     onStopClicked = viewModel::stopTracking
                 )
             }
